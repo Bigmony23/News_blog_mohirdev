@@ -1,8 +1,10 @@
+from audioop import reverse
 from lib2to3.fixes.fix_input import context
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import TemplateView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, UpdateView, DeleteView,CreateView
 
 from .models import News,Category
 from .forms import ContactForm
@@ -117,3 +119,18 @@ class WorldNewsView(ListView):
         news=News.published.all().filter(category__name="World")
         return news
 # Create your views here.
+
+class NewsUpdateView(UpdateView):
+    model = News
+    fields = ('title','body','image','category','status')
+    template_name = 'crud/news_edit.html'
+
+class NewsDeleteView(DeleteView):
+    model = News
+    template_name = 'crud/news_delete.html'
+    success_url = reverse_lazy('home_page')
+
+class NewsCreateView(CreateView):
+    model = News
+    fields = ('title','slug','body','image','category','status')
+    template_name = 'crud/news_create.html'

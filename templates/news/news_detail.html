@@ -7,4 +7,9 @@
      <h5> {{ news.publish_time }}</h5>
     <img src="{{ news.image.url }}">
     <p> {{ news.body }}</p>
+    
+<div class="card-footer text-center" >
+<a href="{% url 'news_update' news.slug %}"> Edit</a>
+<a href="{% url 'news_delete' news.slug %}">Delete</a>
+</div>
 {% endblock content %}
