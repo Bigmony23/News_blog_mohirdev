@@ -18,5 +18,6 @@ urlpatterns=[
     path('tecnology/',TecnologyNewsView.as_view(), name='tecno_news'),
     path('news/create/',NewsCreateView.as_view(), name='news_create'),
 
+
 ]
 

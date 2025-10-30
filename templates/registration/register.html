@@ -1,0 +1,12 @@
+{% extends 'news/base.html' %}
+
+{% block title %} Register {% endblock title %}
+
+{% block content %}
+    <p> Register new users</p>
+    <form method="post"> 
+        {% csrf_token %}
+        {{ form.as_p }}
+    <button type="submit"> Register</button>
+    </form>
+{% endblock content%}
