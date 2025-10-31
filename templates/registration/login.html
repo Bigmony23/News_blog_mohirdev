@@ -5,15 +5,14 @@
 {% block content %}
     <h2> Login</h2>
     <p> Please fill form to login</p>
-    <p> forgot your password <a href="{% url 'password_reset' %}">Click here to reset password </a></p>
+    <p> <h2>Forgot your password <a href="{% url 'password_reset' %}" class="text-danger">Click here to reset password </a></h2></p>
     <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit"> Login</button>
     </form>
-    <form action="{% url 'logout' %} " method="post"> 
-    {% csrf_token %}
-    <button type="submit">Log out</button>
-    </form>
+    <a href="{% url 'user_register' %}"> <button> Register</button></a>
+   
+    
 
 {% endblock content %}

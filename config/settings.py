@@ -136,3 +136,4 @@ LOGIN_REDIRECT_URL='home_page'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'admin@example.com'
 #mailgun and sendgrid
+LOGIN_URL = 'login'
