@@ -1,7 +1,7 @@
 from django.contrib import admin
 from pip._vendor.rich.markup import Tag
 
-from .models import Category, News, Contact
+from .models import Category, News, Contact,Comment
 
 
 @admin.register(Category)
@@ -22,3 +22,18 @@ class NewsAdmin(admin.ModelAdmin):
 class ContactAdmin(admin.ModelAdmin):
     list_display = ['id','name','email','message']
     list_filter = ['name','email','message']
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['user','body','created_time','active']
+    list_filter = ['active','created_time']
+    search_fields = ['user','body']
+    actions = ['disable_comments','enable_comments']
+
+    def disable_comments(self, request, queryset):
+        queryset.update(active=False)
+
+    def enable_comments(self, request, queryset):
+        queryset.update(active=True)
+
+#admin.site.register(Comment,CommentAdmin)
