@@ -7,11 +7,42 @@
      <h5> {{ news.publish_time }}</h5>
     <img src="{{ news.image.url }}">
     <p> {{ news.body }}</p>
+    
  {% if user.is_authenticated and request.user.is_superuser %}   
 <div class="card-footer text-center" >
 
 <a href="{% url 'news_update' news.slug %}"> Edit</a>
 <a href="{% url 'news_delete' news.slug %}">Delete</a>
 </div>
- {% endif %}   
+ {% endif %}   <br>
+<h1> Comments</h1>    
+{% for comment in comments %}
+    
+    <div class="comments" style="padding: 10px">
+    <p class="font-weight-bold">
+        {{ comment.user }}
+    <span class="text-muted font-weight-normal">
+        {{ comment.created_time }}
+    </span>    
+    </p>
+    {{ comment.body|linebreaks }}
+    </div>
+{% endfor %}
+ {% if user.is_authenticated %}   
+ <div class="cool-md-8 card mb-4 mt-3">
+ <div class="card-body">
+     <h3>Write comment</h3>
+     <form method="post" style="margin-top: 1.3em ">
+         {% csrf_token %}
+         {{ comment_form.as_p }}
+         <button type="submit" class="btn btn-primary btn-lg"> Add Comment</button>
+     </form>
+ </div>
+ </div>   
+ {% else %}   
+    <div class="card-body">
+    <p class="text-danger"> You can't write comment without registration</p>
+    <p> To register click <a href="{% url 'user_register' %}"> Register</a>  or <a href="{% url 'login' %}"> Login</a> </p>
+    </div>
+   {% endif %} 
 {% endblock content %}

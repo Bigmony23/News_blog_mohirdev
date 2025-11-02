@@ -30,6 +30,7 @@ def news_detail(request,news):
             new_comments.news = news
             new_comments.user = request.user
             new_comments.save()
+            comment_form = CommentForm()
     else:
         comment_form = CommentForm()
     context = {'news':news,'comments':comments,"new_comments":new_comments,'comment_form':comment_form}
