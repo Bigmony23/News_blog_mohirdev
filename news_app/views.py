@@ -1,7 +1,9 @@
 from audioop import reverse
 from lib2to3.fixes.fix_input import context
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -135,3 +137,16 @@ class NewsCreateView(OnlyLoggedUsers,CreateView):
     model = News
     fields = ('title','slug','body','image','category','status')
     template_name = 'crud/news_create.html'
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def admin_page(request):
+    admin_user = User.objects.filter(is_superuser=True )
+
+    context = {
+        'admin_user':admin_user
+    }
+    return render(request,'pages/admin_page.html',context)
+
+
+
+

@@ -43,15 +43,33 @@
               <li><a href="{% url 'contact' %}">Contact</a></li>
             </ul>
           </div>
-          <div class="header_top_right">
+                     <div class="header_top_right d-flex align-items-center justify-content-end flex-wrap gap-3">
               {% if request.user.is_authenticated %}
-              <p> <a href="{% url 'user_profile' %} " style="color:yellow"> My profile</a></p>
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                  <a href="{% url 'user_profile' %}" 
+                     class="text-warning text-decoration-none fw-semibold">
+                     My profile
+                  </a>
+            
+                  <form action="{% url 'logout' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1">
+                      Logout
+                    </button>
+                  </form>
+                </div>
               {% else %}
-              <p> <a href="{% url 'login' %}" style="color:yellow"> Login </a> </p>
+                <a href="{% url 'login' %}" 
+                   class="text-warning text-decoration-none fw-semibold">
+                   Login
+                </a>
               {% endif %}
-            <p>{% now "js F Y H:i" %}</p>
-          </div>
+            
+              <span class="text-light small ms-3">{% now "j F Y, H:i" %}</span>
+            </div>
         </div>
+
       </div>
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="header_bottom">
