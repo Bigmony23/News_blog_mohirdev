@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView, DeleteView,CreateView
 
 from .models import News,Category
-from .forms import ContactForm
+from .forms import ContactForm, CommentForm
 from .custom_permissions import OnlyLoggedUsers
 def news_list(request):
     news_all = News.objects.filter()
@@ -21,7 +21,18 @@ def news_list(request):
 
 def news_detail(request,news):
     news = get_object_or_404(News,slug=news)
-    context = {'news':news}
+    comments = news.comments.filter(active=True)
+    new_comments=None
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comments = comment_form.save(commit=False)
+            new_comments.news = news
+            new_comments.user = request.user
+            new_comments.save()
+    else:
+        comment_form = CommentForm()
+    context = {'news':news,'comments':comments,"new_comments":new_comments,'comment_form':comment_form}
     return render(request,'news/news_detail.html',context)
 
 def homeView(request):
