@@ -4,6 +4,7 @@ from lib2to3.fixes.fix_input import context
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -159,6 +160,16 @@ def admin_page(request):
     }
     return render(request,'pages/admin_page.html',context)
 
+class SearchResultList(ListView):
+    model = News
+    template_name = 'news/search.html'
+    context_object_name = 'search_news'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return News.objects.filter(Q(title__icontains=query) | Q(body__icontains=query)
+
+        )
 
 
 

@@ -93,6 +93,9 @@
             <li><a href="{% url 'sport_news' %}">Sport</a></li>
           <li><a href="{% url 'contact' %}">Contact Us</a></li>
           <li><a href="{% url 'about' %}">About Us</a></li>
+            <li> <form method="get" action="{% url 'searchresult' %}"> 
+                <input type="search" name="q" placeholder="search" class="form-control">
+            </form> </li>
         </ul>
       </div>
     </nav>

@@ -95,3 +95,4 @@ class EditUserView(LoginRequiredMixin,View):
                 user_form.save()
                 profile_form.save()
                 return redirect('user_profile')
+
