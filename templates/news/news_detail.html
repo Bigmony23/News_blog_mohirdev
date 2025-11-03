@@ -1,10 +1,10 @@
 {% extends 'news/base.html' %}
 
 {% block title %} {{news.title}} {% endblock title %}
-
+{% load hitcount_tags %}
 {% block content %}
      <h2> {{news.title}}</h2>
-     <h5> {{ news.publish_time }}</h5>
+     <h5> {{ news.publish_time }} <span>| <i class="fa-solid fa-eye" aria-hidden="true">{% get_hit_count for news %}</i></span> </h5>
     <img src="{{ news.image.url }}">
     <p> {{ news.body }}</p>
     

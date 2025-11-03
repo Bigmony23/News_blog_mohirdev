@@ -9,6 +9,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView, DeleteView,CreateView
+from hitcount.templatetags.hitcount_tags import get_hit_count
+from hitcount.utils import get_hitcount_model
+from hitcount.views import HitCountMixin
 
 from .models import News,Category
 from .forms import ContactForm, CommentForm
@@ -22,6 +25,18 @@ def news_list(request):
 
 def news_detail(request,news):
     news = get_object_or_404(News,slug=news)
+    context = {}
+    #hitcount
+    hit_count=get_hitcount_model().objects.get_for_object(news)
+    hits=hit_count.hits
+    hit_context=context["hit_count"]={'pk':hit_count.pk}
+    hitcount_response=HitCountMixin.hit_count(request,hit_count)
+    if hitcount_response.hit_counted:
+        hits=hits+1
+        hit_context['hit_counted']=hitcount_response.hit_counted
+        hit_context['hit_message']=hitcount_response.hit_message
+        hit_context['total_hits']=hits
+    
     comments = news.comments.filter(active=True)
     new_comments=None
     if request.method == "POST":

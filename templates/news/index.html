@@ -3,7 +3,7 @@
 
  {% block title %} HomePage {% endblock title %}
 {% block content %}
-   
+   {% load hitcount_tags %}
   <section id="sliderSection">
     <div class="row">
       <div class="col-lg-8 col-md-8 col-sm-8">
@@ -28,7 +28,8 @@
                 {% for news in news %}
               <li>
                 <div class="media"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                  <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title }}</a> </div>
+                  <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title|truncatewords:8 }}</a> 
+                      <div>Views <i class="fa-solid fa-eye" aria-hidden="true">{% get_hit_count for news %}</i></div></div>
                 </div>
               </li>
                 {% endfor %}
@@ -51,8 +52,10 @@
                       {% if forloop.first %}
                 <li>
                   <figure class="bsbig_fig"> <a href="{{ main_local.get_absolute_url }}" class="featured_img"> <img alt="" src="{{ main_local.image.url }}"> <span class="overlay"></span> </a>
-                    <figcaption> <a href="{{ main_local.get_absolute_url }}">{{ main_local.title|truncatewords:5 }}</a> </figcaption>
+                    <figcaption> <a href="{{ main_local.get_absolute_url }}">{{ main_local.title|truncatewords:5 }}</a>
+                    </figcaption>
                     <p>{{ main_local.title }}</p>
+                       <div>Views <i class="fa-solid fa-eye" aria-hidden="true">{% get_hit_count for main_local %}</i></div>
                   </figure>
                 </li>
                       {% endif %}
@@ -65,7 +68,9 @@
                       {% if forloop.counter > 1 %}
                 <li>
                   <div class="media wow fadeInDown"> <a href="{{ local_news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ local.image.url }}"> </a>
-                    <div class="media-body"> <a href="{{ local_news.get_absolute_url }}" class="catg_title"> {{ local.title }}</a> </div>
+                    <div class="media-body"> <a href="{{ local_news.get_absolute_url }}" class="catg_title"> {{ local.title }}</a> 
+                    <div>Views <i class="fa-solid fa-eye" aria-hidden="true">{% get_hit_count for local %}</i></div>
+                    </div>
                   </div>
                 </li>
                       {% endif %}
