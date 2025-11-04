@@ -1,7 +1,11 @@
 {% extends 'news/base.html' %}
+{% load i18n %}
 {% load static %}
 
- {% block title %} HomePage {% endblock title %}
+ {% block title %} 
+     {% blocktranslate %}
+     	HomePage 
+     {% endblocktranslate %}{% endblock title %}
 {% block content %}
    {% load hitcount_tags %}
   <section id="sliderSection">
@@ -21,7 +25,7 @@
            
       <div class="col-lg-4 col-md-4 col-sm-4">
         <div class="latest_post">
-          <h2><span>Latest post</span></h2>
+          <h2><span> {% blocktranslate %}Latest post {% endblocktranslate %}</span></h2>
           <div class="latest_post_container">
             <div id="prev-button"><i class="fa fa-chevron-up"></i></div>
             <ul class="latest_postnav">

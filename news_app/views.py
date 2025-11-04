@@ -164,7 +164,7 @@ class NewsDeleteView(OnlyLoggedUsers,DeleteView):
 
 class NewsCreateView(OnlyLoggedUsers,CreateView):
     model = News
-    fields = ('title','slug','body','image','category','status')
+    fields = ('title','title_uz','title_en','title_ru','slug','body','body_en','body_uz','body_ru','image','category','status')
     template_name = 'crud/news_create.html'
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
