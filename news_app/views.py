@@ -38,6 +38,7 @@ def news_detail(request,news):
         hit_context['total_hits']=hits
     
     comments = news.comments.filter(active=True)
+    comments_count=comments.count()
     new_comments=None
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
@@ -49,7 +50,7 @@ def news_detail(request,news):
             comment_form = CommentForm()
     else:
         comment_form = CommentForm()
-    context = {'news':news,'comments':comments,"new_comments":new_comments,'comment_form':comment_form}
+    context = {'news':news,'comments':comments,"new_comments":new_comments,'comment_form':comment_form,'comments_count':comments_count}
     return render(request,'news/news_detail.html',context)
 
 def homeView(request):
