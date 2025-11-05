@@ -1,49 +1,95 @@
 {% extends 'news/base.html' %}
-
-{% block title %} {{news.title}} {% endblock title %}
 {% load hitcount_tags %}
-{% block content %}
-     <h2> {{news.title}}</h2>
-     <h5> {{ news.publish_time }} <span>| <i class="fa-solid fa-eye" aria-hidden="true">{% get_hit_count for news %}</i></span> </h5>
-    <h5>Comments {{ comments_count }}</h5>
-    <img src="{{ news.image.url }}">
-    <p> {{ news.body }}</p>
-    
- {% if user.is_authenticated and request.user.is_superuser %}   
-<div class="card-footer text-center" >
+{% block title %}{{ news.title }}{% endblock title %}
 
-<a href="{% url 'news_update' news.slug %}"> Edit</a>
-<a href="{% url 'news_delete' news.slug %}">Delete</a>
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+
+      <!-- 📰 Заголовок новости -->
+      <article class="mb-5">
+        <h1 class="fw-bold mb-3 text-center">{{ news.title }}</h1>
+
+        <!-- 📅 Дата и просмотры -->
+        <div class="d-flex justify-content-center align-items-center text-muted mb-3">
+          <span class="me-3">
+            <i class="fa-regular fa-calendar"></i> {{ news.publish_time|date:"d F Y H:i" }}
+          </span>
+          <span>
+            <i class="fa-solid fa-eye"></i> {% get_hit_count for news %}
+          </span>
+        </div>
+
+        <!-- 🖼 Изображение -->
+        {% if news.image %}
+          <img src="{{ news.image.url }}" class="img-fluid rounded mb-4 shadow-sm" alt="{{ news.title }}">
+        {% endif %}
+
+        <!-- 🧾 Тело новости -->
+        <div class="lead" style="line-height: 1.8;">
+          {{ news.body|linebreaks }}
+        </div>
+
+        <!-- ✏️ Кнопки редактирования -->
+        {% if user.is_authenticated and request.user.is_superuser %}
+        <div class="text-center mt-4">
+          <a href="{% url 'news_update' news.slug %}" class="btn btn-outline-primary btn-sm me-2">
+            <i class="fa-solid fa-pen"></i> Edit
+          </a>
+          <a href="{% url 'news_delete' news.slug %}" class="btn btn-outline-danger btn-sm">
+            <i class="fa-solid fa-trash"></i> Delete
+          </a>
+        </div>
+        {% endif %}
+      </article>
+
+      <!-- 💬 Комментарии -->
+      <section class="mb-5">
+        <h3 class="border-bottom pb-2 mb-4">
+          <i class="fa-solid fa-comments"></i> Comments ({{ comments_count }})
+        </h3>
+
+        {% if comments %}
+          {% for comment in comments %}
+            <div class="card mb-3 shadow-sm border-0">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="fw-bold mb-0">{{ comment.user }}</h6>
+                  <small class="text-muted">{{ comment.created_time|date:"d M Y H:i" }}</small>
+                </div>
+                <p class="mb-0">{{ comment.body|linebreaks }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">No comments yet. Be the first to comment!</p>
+        {% endif %}
+      </section>
+
+      <!-- ✍️ Форма комментариев -->
+      {% if user.is_authenticated %}
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h4 class="mb-3">Leave a comment</h4>
+          <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn btn-primary mt-2">
+              <i class="fa-solid fa-paper-plane"></i> Add Comment
+            </button>
+          </form>
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-warning mt-4" role="alert">
+        <i class="fa-solid fa-lock"></i> You need to log in to comment.
+        <a href="{% url 'login' %}" class="alert-link">Login</a> or
+        <a href="{% url 'user_register' %}" class="alert-link">Register</a>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
 </div>
- {% endif %}   <br>
-<h1> Comments {{ comments_count }}</h1>    
-{% for comment in comments %}
-    
-    <div class="comments" style="padding: 10px">
-    <p class="font-weight-bold">
-        {{ comment.user }}
-    <span class="text-muted font-weight-normal">
-        {{ comment.created_time }}
-    </span>    
-    </p>
-    {{ comment.body|linebreaks }}
-    </div>
-{% endfor %}
- {% if user.is_authenticated %}   
- <div class="cool-md-8 card mb-4 mt-3">
- <div class="card-body">
-     <h3>Write comment</h3>
-     <form method="post" style="margin-top: 1.3em ">
-         {% csrf_token %}
-         {{ comment_form.as_p }}
-         <button type="submit" class="btn btn-primary btn-lg"> Add Comment</button>
-     </form>
- </div>
- </div>   
- {% else %}   
-    <div class="card-body">
-    <p class="text-danger"> You can't write comment without registration</p>
-    <p> To register click <a href="{% url 'user_register' %}"> Register</a>  or <a href="{% url 'login' %}"> Login</a> </p>
-    </div>
-   {% endif %} 
 {% endblock content %}

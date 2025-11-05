@@ -21,6 +21,7 @@ from django.conf.urls.i18n import i18n_patterns
 import news_app
 from config import settings
 from news_app.views import news_list
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
