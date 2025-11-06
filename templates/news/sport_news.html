@@ -3,17 +3,26 @@
 {% block title %} Local news {% endblock title %}
 
 {% block content %}
+<div class="container py-5">  
+<h1 class="text-center mb-4">Sport news </h1>
+<div class="row g-4">
    {% for news in sport_news %}
-    <div class="container">
-    <div class="row">
-        <div class="col-sm-8">
+    <div class="col-nd-4 col-sm-6 col-12">
+    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
             <a href="{{ news.get_absolute_url }}">
-            <img src="{{ news.image.url }}" alt="{{ news.title }}" style="width: 40%" >
-            <h2>{{ news.title }}</h2>
+            <img src="{{ news.image.url }}" class="card-ing-top" alt="{{ news.title }}" style="width: 40%" >
             </a>
+        <div class="card-body d-flex flex-column justify-content-between">
+            <h5 class="card-title text-dark fw-bold"> {{ news.title }}</h5>
+            <a href="{{ news.get_absolute_url }}" class="btn btn-primary w-100 mt-2 rounded-pill"> Read more</a>
+            
         </div>
     </div>
     
     </div>
+       {% empty %}
+       <p class="text-center text-muted"> No more available yet.</p>
     {% endfor %}
+</div>
+</div>
 {% endblock content %}
