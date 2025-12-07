@@ -13,7 +13,7 @@ from hitcount.templatetags.hitcount_tags import get_hit_count
 from hitcount.utils import get_hitcount_model
 from hitcount.views import HitCountMixin
 
-from .models import News,Category
+from .models import News, Category, Comment
 from .forms import ContactForm, CommentForm
 from .custom_permissions import OnlyLoggedUsers
 def news_list(request):
@@ -170,9 +170,12 @@ class NewsCreateView(OnlyLoggedUsers,CreateView):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_page(request):
     admin_user = User.objects.filter(is_superuser=True )
+    comments=Comment.objects.all()
+    active_comments=Comment.objects.filter(active=True)
 
     context = {
-        'admin_user':admin_user
+        'admin_user':admin_user,
+        'comments':comments,
     }
     return render(request,'pages/admin_page.html',context)
 

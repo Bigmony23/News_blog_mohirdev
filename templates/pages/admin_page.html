@@ -15,9 +15,28 @@
         <td>{{user.username  }}</td>
         <td>{{user.first_name  }}</td>
         <td>{{user.last_name  }}</td>
+        
     </tr>
        {% endfor %}
     </table>
+    <h2>Comments</h2>
+    <table class="table table-bordered table-responsive table-striped"> 
+    <tr>
+        <th>User</th>
+        <th>News</th>
+        <th>Text</th>
+        <th>Active</th>
+    </tr>
+    {% for comment in comments %}
+    <tr>
+        <td>{{ comment.user }}</td>
+        <td>{{ comment.news }}</td>
+        <td>{{ comment.body }}</td>
+        <td>{{ comment.active }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    
     <h2 > <a href="{% url 'news_create' %}" class="text-primary"> +Add news</a> </h2>
     
       
